@@ -1,4 +1,4 @@
-//modified ch552 fmw of Stefan Wagner to turn 3buttonKnob hw into MS-Teams Mic/Speaker controller
+//modified ch552 fmw of Stefan Wagner to turn 3buttonKnob hw knob to send different key-codes based on selected-key
 
 // ===================================================================================
 // Project:   MacroPad Mini for CH551, CH552 and CH554
@@ -118,45 +118,45 @@ void main(void)
   // Loop
   while(1)
   {
-	//using Key-1 Allow user to sync the Onboard LED's to current microphone mute state
+	//when Key-1 is pressed, turn on its LED to RED showing that Key-1 is being selcted for knob operation
 	if(!PIN_read(PIN_KEY1) != key1last)// key 1 state changed?
 	{
 		key1last = !key1last;      // update last state flag
 		if(key1last)               // key was pressed?
 		{
-			neo1=127;// light up NeoPixel
-			neo2=neo3=0;// light up NeoPixel
-		        NEO_update();      // update NeoPixels NOW!
+			neo1=127;// light up NeoPixel to RED
+			neo2=neo3=0;// turn OFF remaining two LEDs
+		        NEO_update();// update NeoPixels NOW!
 		}
 	}
-        //using Key-2 Allow user to sync the Onboard LED's to current microphone mute state
+	//when Key-2 is pressed, turn on its LED to GREEN showing that Key-2 is being selcted for knob operation
         if(!PIN_read(PIN_KEY2) != key2last)// key 2 state changed?
         {
                 key2last = !key2last;      // update last state flag
                 if(key2last)               // key was pressed?
                 {
-                        neo2=127;// light up NeoPixel
-                        neo1=neo3=0;// light up NeoPixel
-                        NEO_update();      // update NeoPixels NOW!
+                        neo2=127;// light up NeoPixel to GREEN
+                        neo1=neo3=0;// turn OFF remaining two LEDs
+                        NEO_update();// update NeoPixels NOW!
                 }
         }	
 
-        //using Key-3 Allow user to sync the Onboard LED's to current microphone mute state
+	//when Key-3 is pressed, turn on its LED to BLUE showing that Key-3 is being selcted for knob operation
         if(!PIN_read(PIN_KEY3) != key3last)// key 3 state changed?
         {
                 key3last = !key3last;      // update last state flag
                 if(key3last)               // key was pressed?
                 {
-                        neo3=127;// light up NeoPixel
-                        neo1=neo2=0;// light up NeoPixel
+                        neo3=127;// light up NeoPixel to BLUE
+                        neo1=neo2=0;// turn OFF remaining two LEDs
                         NEO_update();      // update NeoPixels NOW!
                 }
         }
 	
 
-	// Handle knob clockwise/counter-clockwise for volume up/down action
-	currentKnobKey = 0;                         // clear key variable
-	if(!PIN_read(PIN_ENC_A))                    // encoder turned ?
+	// Handle knob clockwise/counter-clockwise action and send the corresponding KEY-event to HID host
+	currentKnobKey = 0;      // clear key variable
+	if(!PIN_read(PIN_ENC_A)) // encoder turned ?
 	{
 		if(PIN_read(PIN_ENC_B))
 		{
