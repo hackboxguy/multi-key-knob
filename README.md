@@ -10,8 +10,8 @@ Alternative firmware for CH552 based [3key-1knob COTS HW](https://amzn.eu/d/6olo
 `$ make bin`
 
 ### compile & flash to pad:
-- if on original firmware of OEM: connect pin-12(UDP) of CH552 to +5V through a 10k resistor to enter bootloader mode
-- if on this firmware: press key1 while connecting USB
+- If on original firmware of OEM: As explained [here](#howto), connect pin-12(UDP) of CH552 to +5V through a 10k resistor to enter bootloader mode
+- If on this firmware: press key1 while connecting USB
 - `$ make flash`
 ```
 user@machine:~/multi-key-knob$ make flash
@@ -41,7 +41,7 @@ SUCCESS: 3205 bytes verified.
 DONE.
 ```
 
-### How to overwrite fresh-unit's OEM-Firmware?
+### How to overwrite fresh-unit's OEM-Firmware? <a name="howto"></a>
 ![overwrite-oem-firmware](/images/overwrite-oem-firmware.jpg "overwrite-oem-firmware.")
 - As shown above, prepare the setup by connecting a 10k pullup resistor(Pin-12 of CH552) to +5V
 - When inserting mini-key-board to USB port of your Linux-Host-PC, ensure Pin-12 of CH552 is pulled up
