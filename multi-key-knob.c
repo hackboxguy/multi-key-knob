@@ -51,6 +51,13 @@
 #include <neo.h>                            // NeoPixel functions
 #include <usb_conkbd.h>                     // USB HID consumer keyboard functions
 
+#define KEY1UP '0' //CON_VOL_UP
+#define KEY1DN '1' //CON_VOL_DOWN
+#define KEY2UP '2' //KBD_KEY_UP_ARROW
+#define KEY2DN '3' //KBD_KEY_DOWN_ARROW
+#define KEY3UP '4' //KBD_KEY_PAGE_UP
+#define KEY3DN '5' //KBD_KEY_PAGE_DOWN
+
 // Prototypes for used interrupts
 void USB_interrupt(void);
 void USB_ISR(void) __interrupt(INT_NO_USB) {
@@ -153,7 +160,6 @@ void main(void)
                 }
         }
 	
-
 	// Handle knob clockwise/counter-clockwise action and send the corresponding KEY-event to HID host
 	currentKnobKey = 0;      // clear key variable
 	if(!PIN_read(PIN_ENC_A)) // encoder turned ?
@@ -161,35 +167,36 @@ void main(void)
 		if(PIN_read(PIN_ENC_B))
 		{
 			if(neo1==127)
-				currentKnobKey = CON_VOL_UP;// clockwise
+				currentKnobKey = KEY1UP;//clockwise
 			else if(neo2==127)
-				currentKnobKey = KBD_KEY_UP_ARROW;
+				currentKnobKey = KEY2UP;
 			else
-				currentKnobKey = KBD_KEY_PAGE_UP;
+				currentKnobKey = KEY3UP;
 		}
 		else
 		{
                         if(neo1==127)
-                                currentKnobKey = CON_VOL_DOWN;// clockwise
+                                currentKnobKey = KEY1DN;//counter-clockwise
                         else if(neo2==127)
-                                currentKnobKey = KBD_KEY_DOWN_ARROW;
+                                currentKnobKey = KEY2DN;
                         else
-                                currentKnobKey = KBD_KEY_PAGE_DOWN;
+                                currentKnobKey = KEY3DN;
 		}
 		DLY_ms(10);                           // debounce
 		while(!PIN_read(PIN_ENC_A));          // wait until next detent
-		if(neo1==127)
-		{
-			CON_press(currentKnobKey);
-			DLY_ms(1);
-			CON_release(currentKnobKey);
-		}
-		else //if(neo2==127)
-		{
-			KBD_press(currentKnobKey);	
-			DLY_ms(1);
-			KBD_release(currentKnobKey);
-		}
+		KBD_type(currentKnobKey);
+		//if(neo1==127)
+		//{
+		//	CON_press(currentKnobKey);
+		//	DLY_ms(1);
+		//	CON_release(currentKnobKey);
+		//}
+		//else //if(neo2==127)
+		//{
+		//	KBD_press(currentKnobKey);
+		//	DLY_ms(1);
+		//	KBD_release(currentKnobKey);
+		//}
 	}
 	DLY_ms(5); // latch and debounce
 	WDT_reset();// reset watchdog
