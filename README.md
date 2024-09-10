@@ -2,15 +2,15 @@
 ![3key1knob-picture](/images/3key1knob.png "3key1knob-picture.")
 Alternative firmware for CH552 based [3key-1knob COTS HW](https://amzn.eu/d/6oloNJh). It is Based on [3keys-1knob-firmware](https://github.com/biemster/3keys_1knob) and it allows changing different input-key for rotary knob
 
-- when key-1 is pressed, corresponding Red-LED will turn on and the knob function will be VOL-UP/VOL-DN
-- when key-2 is pressed, corresponding Green-LED will turn on and the knob function will be KEY-UP/KEY-DN
-- when key-3 is pressed, corresponding Blue-LED will turn on and the knob function will be PAGE-UP/PAGE-DN
+- when key-1 is pressed, corresponding Red-LED will turn on and the knob function will be KEY-0/KEY-1
+- when key-2 is pressed, corresponding Green-LED will turn on and the knob function will be KEY-2/KEY-3
+- when key-3 is pressed, corresponding Blue-LED will turn on and the knob function will be KEY-4/KEY-5
 
 ### compile:
 `$ make bin`
 
 ### compile & flash to pad:
-- if on original firmware of OEM: connect P1.5 to GND and connect USB
+- if on original firmware of OEM: connect pin-12(UDP) of CH552 to +5V through a 10k resistor to enter bootloader mode
 - if on this firmware: press key1 while connecting USB
 - `$ make flash`
 ```
@@ -40,3 +40,10 @@ Verifying ...
 SUCCESS: 3205 bytes verified.
 DONE.
 ```
+
+### How to overwrite fresh-unit's OEM-Firmware?
+![overwrite-oem-firmware](/images/overwrite-oem-firmware.jpg "overwrite-oem-firmware.")
+- As shown above, prepare the setup by connecting a 10k pullup resistor(Pin-12 of CH552) to +5V
+- When inserting mini-key-board to USB port of your Linux-Host-PC, ensure Pin-12 of CH552 is pulled up
+- On your Linux-Host-PC, run ```make flash```
+- Unplug mini-key-board and plug it back to see the effect of modifed opensource firmware(using sudo evtest /dev/input/eventX).
